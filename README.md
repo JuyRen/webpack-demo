@@ -9,8 +9,8 @@
 1. asset
    > 代替 url-loader,file-loader,webpack5 内置的资源管理
 
-- asset/resource
-- asset/inline
+- asset/resource 输出文件
+- asset/inline: DataUrl
 - ...
 
 ## plugin

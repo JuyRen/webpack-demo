@@ -3,7 +3,7 @@ import "./index.scss";
 function element() {
   const dom = document.createElement("div");
 
-  dom.innerHTML = "hello,world";
+  dom.innerHTML = "hello,world2s";
   dom.classList.add("h");
 
   return dom;
