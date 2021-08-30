@@ -1,6 +1,9 @@
 @import url("./assets/font/iconfont.scss");
 
 body {
+  display: flex;
+  backface-visibility: hidden;
+
   background-image: url("./assets/image/bg-2.jpg");
 
   .h {

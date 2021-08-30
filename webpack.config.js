@@ -1,4 +1,5 @@
 const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
@@ -12,7 +13,21 @@ module.exports = {
     rules: [
       {
         test: /\.s[ac]ss$/i,
-        use: ["style-loader", "css-loader", "sass-loader"],
+        use: [
+          process.env.NODE_ENV === "development"
+            ? MiniCssExtractPlugin.loader
+            : "style-loader",
+          "css-loader",
+          {
+            loader: "postcss-loader",
+            options: {
+              postcssOptions: {
+                plugins: [["postcss-preset-env"]],
+              },
+            },
+          },
+          "sass-loader",
+        ],
       },
       {
         test: /\.(jpg|jpeg|png|svg|gif)$/i,
@@ -34,24 +49,27 @@ module.exports = {
           filename: "static/font/[hash:10][ext][query]",
         },
       },
+      // 对html中的img资源解析，解析规则为上面的 test: /\.(jpg|jpeg|png|svg|gif)$/i,
+      {
+        test: /\.html$/,
+        use: "html-loader",
+      },
     ],
   },
   plugins: [
+    new MiniCssExtractPlugin({
+      filename: "css/index.[hash].css",
+    }),
     new HtmlWebpackPlugin({
       template: "./public/index.html",
-      favicon: "./public/logo-1.png",
       inject: true,
-      minify: true,
     }),
   ],
   mode: "development",
   devServer: {
-    hot: true,
-    static: {
-      directory: path.join(__dirname, "public"),
-      watch: false,
-    },
+    static: path.resolve(__dirname, "public"),
     compress: true, // g-zip压缩
     port: 9999,
+    open: true,
   },
 };

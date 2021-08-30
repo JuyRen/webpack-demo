@@ -10,3 +10,5 @@ function element() {
 }
 
 document.body.appendChild(element());
+
+console.log(Date.now());

@@ -5,12 +5,19 @@
   "private": true,
   "author": "",
   "scripts": {
-    "serve": "webpack server --open"
+    "build": "cross-env NODE_ENV=development webpack",
+    "serve": "webpack server"
   },
   "license": "ISC",
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "css-loader": "^6.2.0",
+    "html-loader": "^2.1.2",
     "html-webpack-plugin": "^5.3.2",
+    "mini-css-extract-plugin": "^2.2.0",
+    "postcss": "^8.3.6",
+    "postcss-loader": "^6.1.1",
+    "postcss-preset-env": "^6.7.0",
     "sass": "^1.38.1",
     "sass-loader": "^12.1.0",
     "style-loader": "^3.2.1",
