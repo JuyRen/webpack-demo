@@ -1,0 +1,17 @@
+body {
+  margin: 0 auto;
+  padding: 0 20px;
+  max-width: 800px;
+  background: #f4f8fb;
+}
+
+p {
+  transform: translateX(30px);
+}
+
+#img-wrapper {
+  height: 400px;
+  width: 400px;
+  background: url("../public/static/warning.png");
+  background-size: contain;
+}

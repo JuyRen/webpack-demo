@@ -1,14 +1,26 @@
-import "./index.scss";
+import "./index.css";
 
-function element() {
-  const dom = document.createElement("div");
+import Img from "./warning.png";
+import hello from "./hello";
+hello();
 
-  dom.innerHTML = "hello,world2s";
-  dom.classList.add("h");
+console.log("Img: ", Img);
 
-  return dom;
+class Author {
+  constructor(name, age, email) {
+    this.name = name;
+    this.age = age;
+    this.email = email;
+  }
+
+  info = () => {
+    return {
+      name: this.name,
+      age: this.age,
+      email: this.email,
+    };
+  };
 }
 
-document.body.appendChild(element());
-
-console.log(Date.now());
+const author1 = new Author("任均阳", 21, "renjunyang@qq.com");
+console.log("author1: ", author1.info());

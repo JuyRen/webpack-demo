@@ -1,75 +1,66 @@
 const path = require("path");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin"); // 代替style-loader, 将css以文件形式引入 https://webpack.docschina.org/plugins/mini-css-extract-plugin/
 
 module.exports = {
-  entry: "./src/index.js",
+  /**
+   * development: 开发模式，构建快，省略了代码优化
+   * production(默认): 生产模式，打包慢，自动开启代码压缩和tree-shaking
+   * none: 不使用任何默认优化选项
+   */
+  entry: path.resolve(__dirname, "src/index.js"),
   output: {
     filename: "bundle.js",
     path: path.resolve(__dirname, "dist"),
-    clean: true,
   },
   module: {
     rules: [
       {
-        test: /\.s[ac]ss$/i,
-        use: [
-          process.env.NODE_ENV === "development"
-            ? MiniCssExtractPlugin.loader
-            : "style-loader",
-          "css-loader",
-          {
-            loader: "postcss-loader",
-            options: {
-              postcssOptions: {
-                plugins: [["postcss-preset-env"]],
-              },
-            },
-          },
-          "sass-loader",
-        ],
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, "css-loader"],
       },
       {
-        test: /\.(jpg|jpeg|png|svg|gif)$/i,
-        type: "asset", // 判断图片资源大小，小于限定大小：asset/inline 大于限定大小：asset/resource
-        parser: {
-          // https://webpack.docschina.org/configuration/module/#ruleparserdataurlcondition
-          dataUrlCondition: {
-            maxSize: 8 * 1024, // 默认：8kb
-          },
-        },
-        generator: {
-          filename: "static/images/[hash:10][ext]",
-        },
-      },
-      {
-        test: /\.(ttf|woff|woff2)$/i,
+        // https://webpack.docschina.org/guides/asset-modules
+        test: /\.png$/,
         type: "asset/resource",
         generator: {
-          filename: "static/font/[hash:10][ext][query]",
+          filename: "images/[name].[hash:8][ext]", // 文件打包生成的目录以及文件名
         },
       },
-      // 对html中的img资源解析，解析规则为上面的 test: /\.(jpg|jpeg|png|svg|gif)$/i,
       {
-        test: /\.html$/,
-        use: "html-loader",
+        test: /\.js$/,
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              presets: ["@babel/preset-env"],
+            },
+          },
+        ],
       },
     ],
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: "css/index.[hash].css",
-    }),
     new HtmlWebpackPlugin({
-      template: "./public/index.html",
-      inject: true,
+      template: "./src/index.html",
+    }),
+
+    new CleanWebpackPlugin(),
+
+    new MiniCssExtractPlugin({
+      filename: "[name].[chunkhash:8].css",
     }),
   ],
-  mode: "development",
+  resolve: {
+    extensions: [".js", "..."], // 引入文件后缀从左到右依次匹配， 如果想在默认基础上拓展， 使用 ...， 代表默认后缀
+  },
+  devtool: "eval-cheap-module-source-map",
+
   devServer: {
-    static: path.resolve(__dirname, "public"),
-    compress: true, // g-zip压缩
     port: 9999,
-    open: true,
+    // open: true,
+    compress: true,
+    static: "./public/static", // 默认public
   },
 };
