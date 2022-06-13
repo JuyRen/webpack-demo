@@ -11,3 +11,18 @@
 
 1. development: 使用`webpack_require`引入 module，源码不转译
 2. production: 源码转译，并压缩
+
+## 配置
+
+> 五个核心概念 `entry`, `output`, `module(loader)`, `plugins`, `mode`
+
+### entry
+
+> webpack 编译入口文件路径（`相对路径`），可以为单文件和多文件
+
+### output
+
+> 入口文件打包输出配置
+
+1. path: 输出路径(`绝对路径`)
+2. filename: 输出文件名
