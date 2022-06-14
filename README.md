@@ -26,3 +26,14 @@
 
 1. path: 输出路径(`绝对路径`)
 2. filename: 输出文件名
+
+### module
+
+1. rules: `{ test: /\.css$/i, use: loaders[], type: 'asset' }[]`
+
+- use 里放 loader
+- 静态资源（图片，字体，文件等），使用 `type: asset`
+  - asset/resource: 编译为同文件输出
+  - asset/inline: 编译为 base64
+  - asset/source: 源码形式
+  - asset: 超过 limit 大小的转为同文件输出，否则 base64
